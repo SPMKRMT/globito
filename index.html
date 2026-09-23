@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Globoflexia Interactiva con Retardo - oIo</title>
+    <title>Desafío de Soplido Extremo - oIo</title>
     <style>
         body {
             margin: 0;
@@ -63,8 +63,8 @@
         }
 
         button.active-blowing {
-            background: linear-gradient(135deg, #00cb51, #00963c);
-            box-shadow: 0 6px 25px rgba(0, 203, 81, 0.5);
+            background: linear-gradient(135deg, #ff4757, #ff2a6d);
+            box-shadow: 0 6px 25px rgba(255, 71, 87, 0.5);
             animation: pulse 1.5s infinite;
         }
 
@@ -74,9 +74,10 @@
             100% { transform: scale(1); }
         }
 
+        /* CONTENEDOR PRINCIPAL oIo */
         #balloons-group {
             position: absolute;
-            bottom: -10px;
+            bottom: -5px;
             display: flex;
             justify-content: center;
             align-items: flex-end;
@@ -85,75 +86,103 @@
             will-change: transform;
         }
 
-        .balloon-texture {
+        /* --- EL CONDÓN CENTRAL --- */
+        #center-balloon {
+            width: 55px;
+            height: 330px;
+            /* Color látex semitransparente con brillo */
+            background: linear-gradient(90deg, rgba(254,236,214,0.85), rgba(255,255,255,0.95), rgba(254,236,214,0.85));
+            border-radius: 25px 25px 8px 8px;
+            z-index: 3;
             position: relative;
             box-shadow: 
-                inset -15px -15px 35px rgba(0, 0, 0, 0.45), 
-                inset 12px 12px 25px rgba(255, 255, 255, 0.65),
-                0 10px 30px rgba(0, 0, 0, 0.5);
+                inset -10px 0 25px rgba(0, 0, 0, 0.15), 
+                inset 8px 8px 20px rgba(255, 255, 255, 0.8),
+                0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .balloon-texture::before {
+        /* La burbuja / depósito de la punta superior del condón */
+        #center-balloon::after {
             content: '';
             position: absolute;
-            top: 10%;
-            left: 15%;
-            width: 15%;
-            height: 30%;
-            background: rgba(255, 255, 255, 0.6);
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 18px;
+            background: rgba(255,255,255,0.9);
             border-radius: 50%;
-            filter: blur(2px);
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.1), inset 3px 3px 5px rgba(255,255,255,1);
         }
 
-        #center-balloon {
-            width: 52px;
-            height: 340px;
-            background: linear-gradient(105deg, #ff0844, #ffb199);
-            border-radius: 40px 40px 20px 20px;
-            z-index: 3;
-        }
-
-        .side-balloon {
-            width: 95px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #f12711, #f5af19);
+        /* --- LOS HUEVITOS KINDER LATERALES --- */
+        .egg {
+            width: 90px;
+            height: 120px;
+            /* Forma geométrica de huevo (más angosto arriba, ancho abajo) */
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             z-index: 2;
-            margin: 0 -18px; 
-            margin-bottom: 12px; 
+            margin: 0 -15px; 
+            margin-bottom: 5px; 
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset -12px -12px 25px rgba(0, 0, 0, 0.35), 
+                inset 10px 10px 20px rgba(255, 255, 255, 0.5),
+                0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
-        #right-balloon {
-            background: linear-gradient(135deg, #7befb2, #00963c);
+        /* Mitad superior blanca del huevo Kinder */
+        .egg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 52%;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            border-bottom: 3px solid #e0e0e0;
         }
 
-        #knot {
+        /* Mitad inferior naranja brillante del huevo Kinder */
+        .egg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 48%;
+            background: linear-gradient(135deg, #ff6d00, #ff9100);
+        }
+
+        /* El anillo/borde de la base del condón */
+        #ring-base {
             position: absolute;
             bottom: -5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 18px;
-            height: 14px;
-            background-color: #ff0844;
-            border-radius: 4px;
+            width: 65px;
+            height: 12px;
+            background-color: rgba(254,236,214,0.95);
+            border-radius: 6px;
             z-index: 4;
-            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 2px 3px rgba(255,255,255,1);
         }
     </style>
 </head>
 <body>
 
     <div id="ui-container">
-        <h1>🎈 Globos 3D Vibrantes</h1>
+        <h1>🎈 Desafío oIo Custom</h1>
         <div id="instruction-text">Toca el botón inferior para dar los permisos correspondientes.</div>
         <button id="start-btn">Activar e Inflar</button>
     </div>
 
     <div id="balloons-group">
-        <div class="side-balloon balloon-texture" id="left-balloon"></div>
-        <div class="balloon-texture" id="center-balloon"></div>
-        <div class="side-balloon balloon-texture" id="right-balloon"></div>
-        <div id="knot"></div>
+        <div class="egg" id="left-egg"></div>
+        <div id="center-balloon"></div>
+        <div class="egg" id="right-egg"></div>
+        <div id="ring-base"></div>
     </div>
 
     <script>
@@ -193,7 +222,7 @@
                         isListening = true;
                         startBtn.className = 'active-blowing';
                         startBtn.innerText = "¡SOPLA AL MICRÓFONO AHORA!";
-                        instructionText.innerHTML = "<span style='color: #00cb51; font-weight: bold;'>¡Sopla fuerte en la parte inferior de tu teléfono! 📱💨</span>";
+                        instructionText.innerHTML = "<span style='color: #ff4757; font-weight: bold;'>¡Sopla fuerte abajo para inflar el condón y los huevitos! 📱💨</span>";
                         
                         processBlow();
                     }
@@ -215,7 +244,7 @@
 
                     if (blowIntensity > 60) { 
                         currentScale += (blowIntensity * 0.0005); 
-                        if (currentScale > 1.9) currentScale = 1.9; 
+                        if (currentScale > 1.8) currentScale = 1.8; 
                     } else {
                         currentScale -= 0.006; 
                         if (currentScale < 0.05) currentScale = 0.05;
@@ -226,7 +255,7 @@
                     
                     if (blowIntensity > 60) {
                         const time = performance.now() * 0.1;
-                        const shakeStrength = (blowIntensity - 60) * 0.0007; 
+                        const shakeStrength = (blowIntensity - 60) * 0.0008; 
                         vibrationX = Math.sin(time) * shakeStrength;
                         vibrationY = Math.cos(time) * shakeStrength;
                     }
@@ -240,7 +269,7 @@
                 }
 
             } catch (err) {
-                alert('No se pudo acceder al micrófono. Asegúrate de otorgar los permisos de hardware.');
+                alert('No se pudo acceder al micrófono. Asegúrate de dar los permisos correspondientes.');
                 console.error(err);
             }
         });
