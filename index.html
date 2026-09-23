@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globoflexia Interactiva con Retardo - oIo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0d0e12;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        #ui-container {
+            position: absolute;
+            top: 40px;
+            text-align: center;
+            z-index: 10;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 5px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.6);
+        }
+
+        #instruction-text {
+            font-size: 14px;
+            color: #a0a5b5;
+            margin-bottom: 20px;
+            font-weight: 500;
+            min-height: 40px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(79, 172, 254, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        button.waiting {
+            background: linear-gradient(135deg, #ffa000, #ff6f00);
+            box-shadow: 0 6px 25px rgba(255, 160, 0, 0.4);
+            cursor: not-allowed;
+        }
+
+        button.active-blowing {
+            background: linear-gradient(135deg, #00cb51, #00963c);
+            box-shadow: 0 6px 25px rgba(0, 203, 81, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        #balloons-group {
+            position: absolute;
+            bottom: -10px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transform-origin: bottom center;
+            transform: scale(0.05);
+            will-change: transform;
+        }
+
+        .balloon-texture {
+            position: relative;
+            box-shadow: 
+                inset -15px -15px 35px rgba(0, 0, 0, 0.45), 
+                inset 12px 12px 25px rgba(255, 255, 255, 0.65),
+                0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .balloon-texture::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 15%;
+            width: 15%;
+            height: 30%;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        #center-balloon {
+            width: 52px;
+            height: 340px;
+            background: linear-gradient(105deg, #ff0844, #ffb199);
+            border-radius: 40px 40px 20px 20px;
+            z-index: 3;
+        }
+
+        .side-balloon {
+            width: 95px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f12711, #f5af19);
+            z-index: 2;
+            margin: 0 -18px; 
+            margin-bottom: 12px; 
+        }
+
+        #right-balloon {
+            background: linear-gradient(135deg, #7befb2, #00963c);
+        }
+
+        #knot {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 14px;
+            background-color: #ff0844;
+            border-radius: 4px;
+            z-index: 4;
+            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-container">
+        <h1>🎈 Globos 3D Vibrantes</h1>
+        <div id="instruction-text">Toca el botón inferior para dar los permisos correspondientes.</div>
+        <button id="start-btn">Activar e Inflar</button>
+    </div>
+
+    <div id="balloons-group">
+        <div class="side-balloon balloon-texture" id="left-balloon"></div>
+        <div class="balloon-texture" id="center-balloon"></div>
+        <div class="side-balloon balloon-texture" id="right-balloon"></div>
+        <div id="knot"></div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const instructionText = document.getElementById('instruction-text');
+        const balloonsGroup = document.getElementById('balloons-group');
+        
+        let audioContext, analyser, microphone;
+        let currentScale = 0.05; 
+        let isListening = false; 
+
+        startBtn.addEventListener('click', async () => {
+            if(startBtn.classList.contains('waiting') || isListening) return;
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                analyser.fftSize = 512;
+                microphone.connect(analyser);
+
+                let countdown = 3;
+                startBtn.classList.add('waiting');
+                startBtn.innerText = `Preparando... (${countdown}s)`;
+                instructionText.innerHTML = "<span style='color: #ffa000;'>¡Permiso concedido! Prepárate, pero NO soples todavía...</span>";
+                balloonsGroup.style.transform = `scale(${currentScale})`;
+
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        startBtn.innerText = `Preparando... (${countdown}s)`;
+                    } else {
+                        clearInterval(countdownInterval);
+                        
+                        isListening = true;
+                        startBtn.className = 'active-blowing';
+                        startBtn.innerText = "¡SOPLA AL MICRÓFONO AHORA!";
+                        instructionText.innerHTML = "<span style='color: #00cb51; font-weight: bold;'>¡Sopla fuerte en la parte inferior de tu teléfono! 📱💨</span>";
+                        
+                        processBlow();
+                    }
+                }, 1000);
+
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                
+                function processBlow() {
+                    if(!isListening) return;
+
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    let total = 0;
+                    const sampleBins = 25; 
+                    for (let i = 0; i < sampleBins; i++) {
+                        total += dataArray[i];
+                    }
+                    let blowIntensity = total / sampleBins;
+
+                    if (blowIntensity > 60) { 
+                        currentScale += (blowIntensity * 0.0005); 
+                        if (currentScale > 1.9) currentScale = 1.9; 
+                    } else {
+                        currentScale -= 0.006; 
+                        if (currentScale < 0.05) currentScale = 0.05;
+                    }
+
+                    let vibrationX = 0;
+                    let vibrationY = 0;
+                    
+                    if (blowIntensity > 60) {
+                        const time = performance.now() * 0.1;
+                        const shakeStrength = (blowIntensity - 60) * 0.0007; 
+                        vibrationX = Math.sin(time) * shakeStrength;
+                        vibrationY = Math.cos(time) * shakeStrength;
+                    }
+
+                    let finalScaleX = (currentScale + vibrationX) * 0.95;
+                    let finalScaleY = (currentScale * 1.25) + vibrationY;
+
+                    balloonsGroup.style.transform = `scale(${finalScaleX}, ${finalScaleY})`;
+
+                    requestAnimationFrame(processBlow);
+                }
+
+            } catch (err) {
+                alert('No se pudo acceder al micrófono. Asegúrate de otorgar los permisos de hardware.');
+                console.error(err);
+            }
+        });
+    </script>
+</body>
+</html>
