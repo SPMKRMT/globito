@@ -1,278 +1,487 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desafío de Soplido Extremo - oIo</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #0d0e12;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            color: white;
-        }
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#13291f"><meta name="description" content="Sopla desde abajo, llena la pantalla y descubre la sorpresa."><title>oIo — Sopla y sorprende</title><style>:root{color-scheme:light;--paper:#f5f3ec;--ink:#252d28;--orange:#ed6332;--line:#d9ddce;--muted:#6c786b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,"Avenir Next","Segoe UI",sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}button,input{font:inherit}button{cursor:pointer;color:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:disabled{cursor:default;opacity:.65}button:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:5px}[hidden]{display:none!important}svg{display:block}.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}.icon-button{height:44px;min-width:44px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;background:transparent;padding:0}.icon-button:hover{background:#a5ac9122}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+/* PASO 1: instrucciones y preparación. No comparte espacio con el juego. */
+.welcome{min-height:100svh;display:flex;flex-direction:column;padding:0 28px 24px;position:relative;overflow:hidden}.welcome:before{content:"";position:absolute;width:800px;height:800px;top:-250px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,#e6eacd99,transparent 65%);pointer-events:none}.welcome-nav{display:flex;justify-content:space-between;align-items:center;height:85px;width:min(1080px,100%);margin:0 auto;position:relative;border-bottom:1px solid var(--line)}.brand{display:flex;gap:14px;align-items:center}.wordmark{font-family:Georgia,serif;font-size:43px;font-weight:bold;letter-spacing:-6px;padding-right:7px;line-height:1}.wordmark em{color:var(--orange)}.brand-caption{font-size:9px;letter-spacing:1.5px;border-left:1px solid var(--line);padding-left:14px;line-height:1.5;font-weight:650}.step-indicator{font-size:10px;letter-spacing:1.2px;color:var(--muted)}.step-indicator b{color:var(--orange)}.welcome-main{width:min(460px,100%);margin:auto;position:relative;text-align:center;padding:35px 0 24px}.eyebrow{font-size:9px;font-weight:750;letter-spacing:2.5px;color:#75806b}.eyebrow:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--orange);margin:0 9px 2px 0}h1{font-size:70px;font-weight:650;letter-spacing:-4px;line-height:1.02;margin:18px 0}h1 em{display:block;font-family:Georgia,serif;font-weight:400;color:var(--orange);letter-spacing:-3px}.lede{font-size:13px;color:var(--muted);line-height:1.8;margin:0 auto;max-width:340px}.steps{padding:0;list-style:none;display:flex;text-align:left;gap:18px;margin:30px 0}.steps li{flex:1;font-size:11px;line-height:1.6;color:var(--muted)}.steps b{display:block;margin-bottom:9px;font-size:9px;letter-spacing:2px;color:var(--orange)}.steps strong{display:block;font-size:12px;color:var(--ink);font-weight:650;margin-bottom:4px}.setup{text-align:left}.control-label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:1.4px;font-weight:700;margin:0 0 11px}.control-label span:last-child{font-weight:400;color:var(--muted);letter-spacing:0}.difficulty{display:flex;gap:4px;padding:4px;background:#e8ecdf;border:1px solid #dde2d3;border-radius:14px}.difficulty button{border:0;border-radius:10px;flex:1;background:none;padding:11px;color:#6d7865;font-size:12px}.difficulty button[aria-pressed=true]{background:var(--paper);box-shadow:0 2px 6px #1b2a1420;color:var(--ink);font-weight:700}.difficulty-description{font-size:11px;color:var(--muted);margin:10px 0 20px}.primary{border:0;background:var(--orange);color:white;border-radius:14px;width:100%;padding:17px 21px;min-height:59px;font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 0 #c94721;transition:transform .2s,background .2s}.primary:hover{background:#e65a29;transform:translateY(-1px)}.primary:active{transform:translateY(3px);box-shadow:0 1px 0 #c94721}.primary .left{display:flex;align-items:center;gap:12px}.primary .arrow{font-size:22px;font-weight:400}.secondary-actions{display:flex;justify-content:space-between;gap:15px;margin-top:16px}.link-button{border:0;border-bottom:1px solid #bcc5b0;background:none;padding:8px 0;font-size:11px;color:var(--muted);min-height:38px}.link-button:hover{color:var(--orange)}.privacy{display:flex;justify-content:center;align-items:center;gap:6px;font-size:10px;color:#7a8471;margin:23px 0 0}.privacy .ico{width:12px;height:12px}.welcome-footer{font-size:10px;color:#8b9282;text-align:center}.error-box{font-size:12px;line-height:1.7;color:#913e25;background:#f8e6d9;border:1px solid #eac5af;border-radius:12px;padding:13px 15px;margin-bottom:16px}
+/* PASO 2: toda la superficie visible pertenece a la animación. */
+body.in-game{overflow:hidden;overscroll-behavior:none;background:#13291f}.stage{position:fixed;inset:0;width:100%;height:100dvh;min-height:0;overflow:hidden;background:#13291f;color:#edf0de;isolation:isolate;touch-action:none}.stage:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 104%,#71935755 0%,#38583b33 36%,transparent 74%),radial-gradient(ellipse at 50% 8%,#50624925,transparent 65%),linear-gradient(145deg,#293e30,#10271d 75%)}.stage:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:6;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath d='M0 0h120v120H0z' fill='%23fff' filter='url(%23n)'/%3E%3C/svg%3E")}.sculpture{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:1}.animated{will-change:transform}.fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}.game-top{position:absolute;top:0;left:0;right:0;padding:calc(15px + env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 0 max(18px,env(safe-area-inset-left));z-index:12;display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none}.game-top>*{pointer-events:auto}.game-top .icon-button{border-color:#bdcda32f;background:#122b2055;backdrop-filter:blur(12px);color:#d5e0c3;width:42px;height:42px;min-width:42px}.game-top .ico{width:18px;height:18px}.game-actions{display:flex;gap:8px}.live-badge{font-size:9px;letter-spacing:1.2px;display:flex;align-items:center;gap:7px;text-transform:uppercase;color:#adc19c}.live-dot{width:5px;height:5px;border-radius:50%;background:#9caf8b}.stage[data-phase=playing] .live-dot{background:#cfefa6;box-shadow:0 0 10px #b5e38f80}.game-caption{position:absolute;top:calc(80px + env(safe-area-inset-top));left:24px;right:24px;text-align:center;z-index:7;pointer-events:none}.game-caption h2{font-family:Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-1px;font-size:clamp(25px,5vw,36px);margin:0 0 7px;color:#edf1d6}.game-caption p{margin:0;font-size:11px;color:#9eb38e;line-height:1.6}.game-caption.minimal h2{font-size:24px;opacity:.65}.game-caption.minimal p{opacity:.55}.side-meter{position:absolute;right:max(19px,env(safe-area-inset-right));top:44%;transform:translateY(-50%);display:flex;align-items:center;gap:9px;z-index:7;pointer-events:none}.pressure-marker{text-align:right}.pressure-marker b{font-size:23px;font-weight:450;letter-spacing:-1px;font-variant-numeric:tabular-nums}.pressure-marker small{font-size:9px;color:#a7b79a}.pressure-marker span{display:block;font-size:7px;letter-spacing:1.5px;color:#829775;margin-top:4px}.progress-track{height:100px;width:2px;background:#b7c49a22;border-radius:6px;position:relative;overflow:hidden}.progress-fill{position:absolute;bottom:0;left:0;width:100%;height:0;background:#dac09a;box-shadow:0 0 14px #f5cc8b70;transition:height .08s linear}.mini-stats{position:absolute;left:max(20px,env(safe-area-inset-left));top:44%;transform:translateY(-50%);z-index:7;pointer-events:none;display:flex;flex-direction:column;gap:23px}.mini-stats small{display:block;font-size:7px;letter-spacing:1.4px;color:#839b78;margin-bottom:6px}.mini-stats strong{font-size:12px;font-weight:450;font-variant-numeric:tabular-nums;color:#bccba9}.mini-stats strong span{font-size:9px;color:#92a983}.signal{display:flex;gap:2px;height:16px;align-items:center}.signal i{width:2px;height:3px;background:#657f57;border-radius:4px}.edge-hint{position:absolute;bottom:19px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:2px;white-space:nowrap;pointer-events:none;z-index:8;color:#d3dfb9;display:flex;align-items:center;gap:74px}.edge-hint span:first-child:after{content:"↗";margin-left:9px}.edge-hint span:last-child:before{content:"↖";margin-right:9px}.hold-pad{position:absolute;inset:0;border:0;padding:0;background:transparent;z-index:5;touch-action:none;user-select:none;-webkit-user-select:none;color:transparent;cursor:pointer}.hold-pad:focus-visible{outline:2px solid #c6dbae;outline-offset:-5px}.countdown{position:absolute;inset:0;z-index:20;background:#142d208c;backdrop-filter:blur(5px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.countdown small{font-size:9px;letter-spacing:3px;color:#bbd09f}.countdown b{font-size:clamp(120px,25vw,180px);font-weight:250;letter-spacing:-10px;color:#f5e4c5;line-height:1.3}.countdown p{font-size:12px;line-height:1.8;color:#bed0ae}.countdown .link-button{color:#abc093;border-color:#94ad7f55;margin-top:22px}.pause-layer,.success{position:absolute;inset:0;z-index:21;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:26px;background:#14291fb8;backdrop-filter:blur(8px)}.pause-layer h2,.success h2{font-family:Georgia,serif;font-style:italic;font-size:46px;font-weight:400;color:#f6e6c9;margin:10px 0 15px;letter-spacing:-1.5px}.pause-layer p,.success p{font-size:12px;line-height:1.8;color:#b6c6a4;max-width:300px;margin:0 0 25px}.pause-layer .primary,.success .primary{max-width:300px;justify-content:center}.pause-layer .link-button,.success .link-button{color:#b7c6a5;border-color:#95ac7944;margin-top:14px}.success small{font-size:9px;letter-spacing:2px;color:#c5d6b1}.success .result-time{font-size:14px;color:#f5cc9b;margin-bottom:25px;font-variant-numeric:tabular-nums}.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;border-radius:13px;padding:13px 20px;background:#253a2c;color:#f2f0df;z-index:50;font-size:12px;max-width:calc(100% - 32px);width:max-content;transition:opacity .2s,transform .2s}.toast.visible{opacity:1;transform:translate(-50%,0)}
+dialog{border:1px solid #dadfd0;border-radius:24px;padding:27px;background:var(--paper);color:var(--ink);box-shadow:0 30px 100px #10201a40;max-width:430px;width:calc(100% - 28px);max-height:85dvh}dialog::backdrop{background:#102318b8;backdrop-filter:blur(7px)}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.dialog-head h2{font-size:25px;font-weight:500;letter-spacing:-1px;margin:0}.dialog-head .icon-button{width:36px;min-width:36px;height:36px}.how-step{display:flex;gap:13px;margin:23px 0}.how-step b{border:1px solid #d2d8c7;width:29px;height:29px;border-radius:50%;display:grid;place-content:center;font-size:11px;flex:none;color:var(--orange)}.how-step p{margin:0;font-size:13px;line-height:1.7;color:#697461}.how-step strong{display:block;color:var(--ink)}.dialog-note{border-top:1px solid var(--line);padding-top:17px;font-size:11px;line-height:1.8;color:#76806d}.setting{margin:23px 0}.setting label{font-size:12px;font-weight:650;display:flex;justify-content:space-between;align-items:center}.setting p{font-size:11px;color:#78806f;line-height:1.7}.setting input[type=range]{accent-color:var(--orange);width:100%;margin:18px 0 4px}.setting input[type=checkbox]{accent-color:var(--orange);width:18px;height:18px}
+@media(max-width:600px){.welcome{padding:0 23px 20px}.welcome-nav{height:72px}.wordmark{font-size:37px}.brand-caption{font-size:8px}.step-indicator{font-size:8px}.welcome-main{padding:27px 0 21px}h1{font-size:58px;margin:17px 0;letter-spacing:-3px}.lede{font-size:12px}.steps{gap:13px;margin:24px 0}.steps li{font-size:10px}.steps strong{font-size:11px}.steps b{margin-bottom:6px}.primary{font-size:13px;min-height:56px}.privacy{font-size:9px;margin-top:22px}.game-caption{top:calc(82px + env(safe-area-inset-top));left:12px;right:12px}.game-caption p{font-size:10px}.game-top{padding-top:calc(13px + env(safe-area-inset-top))}.game-top .icon-button{width:39px;height:39px;min-width:39px}.game-actions{gap:6px}.live-badge{font-size:8px;letter-spacing:.8px}.side-meter{right:14px}.mini-stats{left:15px}.pressure-marker b{font-size:20px}.mini-stats strong{font-size:11px}.edge-hint{font-size:8px;gap:67px}.pause-layer h2,.success h2{font-size:40px}}
+@media(max-height:620px) and (orientation:landscape){.game-caption{top:25px;left:25%;right:25%}.game-caption h2{font-size:22px}.game-top{align-items:flex-start}.live-badge{display:none}.mini-stats{top:53%}.side-meter{top:53%}.welcome-main{padding:25px 0}.welcome-nav{height:63px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style></head><body><svg aria-hidden="true" width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 16V3m-4 4 4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 8.5a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4M12 16h.01"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 7M3 4v6h6"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h4m4 0h8M4 17h8m4 0h4"/><circle cx="10" cy="7" r="2"/><circle cx="14" cy="17" r="2"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4V4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+<symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4V4Zm5 5 6 6m0-6-6 6"/></symbol>
+</defs></svg><section class="welcome" id="welcome" aria-labelledby="title">
+ <header class="welcome-nav"><div class="brand"><div class="wordmark" aria-label="oIo">o<em>I</em>o</div><div class="brand-caption">SOPLA &amp;<br>SORPRENDE.</div></div><span class="step-indicator"><b>01</b> / PREPÁRATE</span></header>
+ <main class="welcome-main">
+  <div class="eyebrow">EL RETO ESTÁ EN EL AIRE</div><h1 id="title">Un soplido.<em>Y que pase todo.</em></h1><p class="lede">Tu teléfono, tres figuras y una sorpresa.<br>La siguiente pantalla es toda tuya.</p>
+  <ol class="steps"><li><b>01</b><strong>Activa.</strong>Permite el micrófono y espera 3 segundos.</li><li><b>02</b><strong>Sopla abajo.</strong>La abertura está justo en el borde del teléfono.</li><li><b>03</b><strong>Llénalo.</strong>Llega al 100% y mira lo que sale de la punta.</li></ol>
+  <div class="setup"><div class="error-box" id="errorBox" role="alert" hidden></div><div class="control-label"><span>ELIGE TU RETO</span><span>¿Qué tanto aire tienes?</span></div><div class="difficulty" role="group" aria-label="Dificultad"><button data-level="easy" aria-pressed="false">Suave</button><button data-level="normal" aria-pressed="true">Reto</button><button data-level="hard" aria-pressed="false">Extremo</button></div><p class="difficulty-description" id="difficultyDescription">Un poco de resistencia. Mucha satisfacción.</p>
+   <button class="primary" id="startBtn"><span class="left"><svg class="ico"><use href="#i-mic"/></svg><span id="startLabel">Activar y entrar</span></span><span class="arrow" aria-hidden="true">↗</span></button>
+   <div class="secondary-actions"><button class="link-button" id="demoBtn">Probar con el dedo ↗</button><button class="link-button" id="helpBtn">Cómo jugar</button></div><button class="link-button" id="cancelPermission" hidden>Cancelar solicitud</button>
+  </div><p class="privacy"><svg class="ico"><use href="#i-lock"/></svg>Nada se graba. Nada se envía.</p>
+ </main><footer class="welcome-footer">Un poco de aire. Y de humor.</footer>
+</section>
+<section class="stage" id="stage" data-phase="idle" aria-label="Juego a pantalla completa" hidden>
+ <div class="game-top"><button class="icon-button" id="backBtn" aria-label="Volver a las instrucciones" title="Volver"><svg class="ico"><path d="m14 5-7 7 7 7"/></svg></button><div class="live-badge"><i class="live-dot"></i><span id="statusBadge">Prepárate</span></div><div class="game-actions"><button class="icon-button" id="soundBtn" aria-label="Activar sonido" aria-pressed="false"><svg class="ico"><use id="soundIcon" href="#i-mute"/></svg></button><button class="icon-button" id="settingsBtn" aria-label="Ajustes"><svg class="ico"><use href="#i-sliders"/></svg></button><button class="icon-button" id="pauseBtn" aria-label="Pausar"><svg class="ico"><path d="M9 5v14M15 5v14"/></svg></button></div></div>
+ <div class="game-caption" id="gameCaption" aria-live="polite"><h2 id="gameHeading">Ahora sí, sopla.</h2><p id="gameDetail">Hacia el micrófono del borde inferior.</p></div>
+ <svg class="sculpture" id="sculpture" viewBox="0 0 390 844" preserveAspectRatio="none" role="img" aria-labelledby="sculptureTitle"><title id="sculptureTitle">Condón inflable con abertura en el borde inferior, entre dos huevitos Kinder</title><defs>
+     <radialGradient id="halo"><stop stop-color="#c7dc9b" stop-opacity=".15"/><stop offset="1" stop-color="#9ac285" stop-opacity="0"/></radialGradient>
+     <radialGradient id="floor"><stop stop-color="#97a879" stop-opacity=".27"/><stop offset="1" stop-color="#97a879" stop-opacity="0"/></radialGradient>
+     <linearGradient id="pedestalTop" x2="0" y2="1"><stop stop-color="#5a6750"/><stop offset="1" stop-color="#3b493a"/></linearGradient>
+     <linearGradient id="pedestalSide" x2="1"><stop stop-color="#26352b"/><stop offset=".4" stop-color="#455240"/><stop offset=".8" stop-color="#303e31"/><stop offset="1" stop-color="#223027"/></linearGradient>
+     <linearGradient id="latex" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#b8b797" stop-opacity=".75"/><stop offset=".08" stop-color="#f9ecc8" stop-opacity=".92"/><stop offset=".19" stop-color="#fff4d3" stop-opacity=".99"/><stop offset=".32" stop-color="#e0d2a5" stop-opacity=".9"/><stop offset=".55" stop-color="#b3b18a" stop-opacity=".51"/><stop offset=".75" stop-color="#9eaa83" stop-opacity=".43"/><stop offset=".9" stop-color="#ded7aa" stop-opacity=".83"/><stop offset=".98" stop-color="#ffefd0" stop-opacity=".8"/><stop offset="1" stop-color="#9a9f7c" stop-opacity=".6"/></linearGradient>
+     <radialGradient id="latexTop" cx=".3" cy=".05" r=".95"><stop stop-color="#fff8e2" stop-opacity=".8"/><stop offset=".48" stop-color="#eee4bd" stop-opacity=".1"/><stop offset="1" stop-color="#b9bc88" stop-opacity="0"/></radialGradient>
+     <linearGradient id="rim" x2="0" y2="1"><stop stop-color="#fff3d3"/><stop offset=".2" stop-color="#e3d6ae"/><stop offset=".53" stop-color="#c0b592"/><stop offset=".75" stop-color="#e2d5ab"/><stop offset="1" stop-color="#9b9574"/></linearGradient>
+     <radialGradient id="eggWhite" cx=".28" cy=".25" r=".83"><stop stop-color="#fffffa"/><stop offset=".33" stop-color="#f4f0e5"/><stop offset=".64" stop-color="#d8d9cc"/><stop offset=".86" stop-color="#9caaa0"/><stop offset="1" stop-color="#63736a"/></radialGradient>
+     <linearGradient id="orangeFoil" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#9f361a"/><stop offset=".17" stop-color="#ff873c"/><stop offset=".37" stop-color="#f97124"/><stop offset=".62" stop-color="#e9561b"/><stop offset=".83" stop-color="#ba421b"/><stop offset="1" stop-color="#782d1b"/></linearGradient>
+     <linearGradient id="eggSheen" x2="1" y2=".4"><stop stop-color="#fff" stop-opacity=".5"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient>
+     <radialGradient id="eggHighlight" cx=".3" cy=".15" r=".7"><stop stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+     <filter id="shadow" x="-.5" y="-.2" width="2" height="1.6"><feDropShadow dx="5" dy="12" stdDeviation="8" flood-color="#09130c" flood-opacity=".4"/></filter>
+     <filter id="soft"><feGaussianBlur stdDeviation="5"/></filter>
+     <filter id="foil" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency=".09 .16" numOctaves="3" seed="8"/><feDiffuseLighting lighting-color="#fff" surfaceScale="1.3" diffuseConstant=".8"><feDistantLight azimuth="225" elevation="45"/></feDiffuseLighting><feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="soft-light"/></filter>
+     <clipPath id="eggClip"><path d="M0-159C-31-158-68-107-69-58C-71-19-41 3 0 3S71-18 69-57C67-108 31-159 0-159Z"/></clipPath>
+     <g id="eggArt">
+      <path d="M0-159C-31-158-68-107-69-58C-71-19-41 3 0 3S71-18 69-57C67-108 31-159 0-159Z" fill="url(#eggWhite)"/>
+      <g clip-path="url(#eggClip)">
+       <path d="M-78-72C-62-88-49-72-39-69S-26-86-13-74S5-64 18-75S36-62 47-72S66-70 78-74V20H-78Z" fill="url(#orangeFoil)"/>
+       <path d="M-76-72C-62-88-49-72-39-69S-26-86-13-74S5-64 18-75S36-62 47-72S66-70 78-74" fill="none" stroke="#fff8e7" stroke-width="2" opacity=".8"/>
+       <path d="M-49-110-41-97-50-83-45-63-57-51-47-31-37-26-30-8M36-133 30-115 43-102 39-84 49-67 42-55 53-40 39-27 41-7M-12-158-16-143-9-136M10-158 15-145 9-131" fill="none" stroke="#fff" stroke-width="1.5" opacity=".32"/>
+       <path d="m-52-118 8 13-4 13m-9 44 13 11-3 17m85-83-5 16 7 9m-10 32 8 12-9 13" fill="none" stroke="#314136" stroke-width="1.3" opacity=".17"/>
+       <path d="M-31-144Q-52-106-42-69T-24-4" fill="none" stroke="#fff" stroke-width="16" opacity=".11"/>
+       <ellipse cx="-28" cy="-120" rx="16" ry="29" fill="url(#eggHighlight)" transform="rotate(24 -28 -120)"/>
+       <path d="M0-159C-31-158-68-107-69-58C-71-19-41 3 0 3S71-18 69-57C67-108 31-159 0-159Z" fill="url(#eggSheen)"/>
+       <g transform="translate(-31 -92) rotate(-4)"><text font-family="Arial,sans-serif" font-size="23" font-weight="800" letter-spacing="-1.2"><tspan fill="#292d29">K</tspan><tspan fill="#e84622">inder</tspan></text></g>
+       <text x="0" y="-49" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" font-weight="800" letter-spacing="1.5" fill="#fff6dc">SORPRESA</text>
+       <path d="m-11-30 9-7 9 6-6 10-12-2Z" fill="#f9eee0" opacity=".9"/><path d="m-5-28 9-6 8 7-9 8Z" fill="#6a3523"/><path d="m-4-26 6-4 5 4-5 4Z" fill="#a56c40"/>
+       <rect x="-75" y="-170" width="150" height="180" fill="#bcb6a0" opacity=".13" filter="url(#foil)"/>
+      </g>
+      <path d="M0-159C-31-158-68-107-69-58C-71-19-41 3 0 3S71-18 69-57C67-108 31-159 0-159Z" fill="none" stroke="#e4e3c9" stroke-opacity=".25"/>
+     </g>
+    </defs><g id="inflatable" class="animated" transform="translate(195 842) scale(.55 .1) translate(0 7)">
+     <g id="leftEgg" class="animated" transform="translate(-76 -7) rotate(-12)"><use href="#eggArt" filter="url(#shadow)"/><path id="eggWrinkleLeft" d="M-52-40q22-22 39-4t41 0M-44-70q20-21 42-2t42-4M-30-100q20-20 46 0" fill="none" stroke="#263b26" stroke-width="3" opacity="0"/></g>
+     <g id="rightEgg" class="animated" transform="translate(76 -7) rotate(12)"><use href="#eggArt" filter="url(#shadow)"/><path id="eggWrinkleRight" d="M-52-40q22-22 39-4t41 0M-44-70q20-21 42-2t42-4M-30-100q20-20 46 0" fill="none" stroke="#263b26" stroke-width="3" opacity="0"/></g>
+     <g id="latexBody" class="animated">
+      <path d="M-39-6C-45-64-44-241-41-291C-40-322-24-338-12-339L-12-351C-12-366 12-366 12-351L12-339C28-336 40-319 41-291C44-235 44-59 39-6Z" fill="url(#latex)" stroke="#f9ecc8" stroke-width=".75" stroke-opacity=".48"/>
+      <path d="M-39-6C-45-64-44-241-41-291C-40-322-24-338-12-339L-12-351C-12-366 12-366 12-351L12-339C28-336 40-319 41-291C44-235 44-59 39-6Z" fill="url(#latexTop)"/>
+      <path d="M-24-36C-28-97-28-222-26-281Q-26-317-14-325" fill="none" stroke="#fff9e0" stroke-width="5" opacity=".35" stroke-linecap="round"/>
+      <path d="M-33-91C-34-157-34-247-31-286" fill="none" stroke="#fffce9" stroke-width="1.6" opacity=".75" stroke-linecap="round"/>
+      <path d="M33-45Q39-167 34-280" fill="none" stroke="#fff2c2" stroke-width="2" opacity=".35"/>
+      <path d="M-7-349Q-7-357 1-357" fill="none" stroke="#fff9e4" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+      <g fill="none" stroke="#f4e9c0" stroke-width="1" opacity=".27"><path d="M-38-23q35-10 76-1M-40-33q35 7 79-2M-39-43q32-6 78-1M-39-56q33 9 79 1"/><path d="M-29-326q28 9 52-1"/></g>
+      <ellipse cx="0" cy="-7" rx="47" ry="9" fill="url(#rim)"/><ellipse id="mouthOpening" cx="0" cy="-7" rx="37" ry="3.8" fill="#0a2016"/><path d="M-43-9q43-12 86 0" fill="none" stroke="#fff0cd" stroke-width="2" opacity=".75"/>
+     </g>
+    </g>
+</svg>
+ <button class="hold-pad" id="holdPad" aria-label="Mantén presionada la pantalla para inflar" hidden><span class="sr-only">Mantén presionado para inflar</span></button>
+ <canvas class="fx" id="effects" aria-hidden="true"></canvas>
+ <aside class="mini-stats" aria-label="Estadísticas"><div><small>TIEMPO</small><strong id="timer">00.0 <span>s</span></strong></div><div><small>TU MEJOR</small><strong id="record">— <span>s</span></strong></div><div><small id="signalLabel">AIRE</small><div class="signal" id="signal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div></aside>
+ <div class="side-meter"><div class="pressure-marker"><b id="percent">0</b><small>%</small><span>INFLADO</span></div><div class="progress-track" id="progress" role="progressbar" aria-label="Inflado" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill" id="progressFill"></div></div></div>
+ <div class="edge-hint" id="edgeHint"><span>SOPLA</span><span>AQUÍ</span></div>
+ <div class="countdown" id="countdown" hidden><small>PREPARA ESE SOPLIDO</small><b id="countNumber">3</b><p>No soples todavía.<br>La entrada de aire empieza al terminar la cuenta.</p><button class="link-button" id="cancelCountdown">Volver</button></div>
+ <div class="pause-layer" id="pauseLayer" hidden><h2 id="pauseTitle">Toma aire.</h2><p id="pauseText">Tu progreso te espera.</p><button class="primary" id="resumeBtn">Continuar</button><button class="link-button" id="exitPaused">Volver al inicio</button></div>
+ <div class="success" id="success" hidden><small>LA SORPRESA ESTABA DENTRO</small><h2>¡Vaya soplido!</h2><p>Salieron, volaron… y explotaron.</p><div class="result-time" id="resultText"></div><button class="primary" id="replayBtn">Otra ronda ↗</button><button class="link-button" id="shareBtn">Retar a un amigo</button><button class="link-button" id="exitWon">Cambiar de reto</button></div>
+</section>
+<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="dialog-head"><h2 id="helpTitle">Es cuestión de aire.</h2><button class="icon-button" data-close aria-label="Cerrar ayuda"><svg class="ico"><use href="#i-x"/></svg></button></div><div class="how-step"><b>01</b><p><strong>Activa y espera.</strong>Permite el acceso al micrófono. Durante los 3 segundos de preparación, ningún sonido infla las figuras.</p></div><div class="how-step"><b>02</b><p><strong>Sopla al micrófono.</strong>En muchos teléfonos está en el borde inferior. Sopla con constancia: las tres figuras crecen juntas y pierden algo de aire cuando paras.</p></div><div class="how-step"><b>03</b><p><strong>Llega al 100%.</strong>Mantén el aire un instante para completar el reto. Tu mejor tiempo se guarda en este navegador, por dificultad.</p></div><p class="dialog-note">¿No responde? Abre el enlace HTTPS directamente en Chrome o Safari y revisa el permiso de micrófono del sitio. Puedes ajustar la sensibilidad o probar con el botón táctil. La detección estima el soplido: algunos ruidos también pueden activarla. Haz pausas cuando lo necesites.</p></dialog>
+<dialog id="settingsDialog" aria-labelledby="settingsTitle"><div class="dialog-head"><h2 id="settingsTitle">A tu ritmo.</h2><button class="icon-button" data-close aria-label="Cerrar ajustes"><svg class="ico"><use href="#i-x"/></svg></button></div><div class="setting"><label for="sensitivity">Sensibilidad del micrófono <output id="sensitivityValue">55%</output></label><input id="sensitivity" type="range" min="0" max="100" value="55"><p>Súbela si cuesta detectar el soplido. Bájala si el ruido del lugar activa el juego.</p></div><div class="setting"><label for="reduceMotion">Movimiento reducido <input id="reduceMotion" type="checkbox"></label><p>Reduce las sacudidas y simplifica las partículas y sus explosiones.</p></div><div class="setting"><label for="soundToggle">Sonido al completar el reto <input id="soundToggle" type="checkbox"></label><p>Una pequeña celebración. El micrófono se desconecta antes de reproducirla.</p></div><p class="dialog-note">Si abres este panel durante una partida, se pausa y el micrófono se apaga. Al continuar tendrás de nuevo 3 segundos para prepararte.</p></dialog>
+<div class="toast" id="toast" role="status"></div>
+<noscript>Activa JavaScript para jugar.</noscript><script>(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const clamp = (n, a = 0, b = 1) => Math.max(a, Math.min(b, n));
+  const el = {
+    stage:$('stage'), welcome:$('welcome'), start:$('startBtn'),
+    startLabel:$('startLabel'), error:$('errorBox'), badge:$('statusBadge'),
+    countdown:$('countdown'), count:$('countNumber'), percent:$('percent'),
+    progress:$('progress'), fill:$('progressFill'), timer:$('timer'),
+    record:$('record'), hold:$('holdPad'), demo:$('demoBtn'),
+    success:$('success'), result:$('resultText'), group:$('inflatable'),
+    latex:$('latexBody'), left:$('leftEgg'), right:$('rightEgg'),
+    canvas:$('effects'), svg:$('sculpture')
+  };
+  const levels = {
+    easy:{name:'Suave',gain:.16,leak:.013,desc:'Poca resistencia. Para entrar en calor.'},
+    normal:{name:'Reto',gain:.108,leak:.025,desc:'Un poco de resistencia. Mucha satisfacción.'},
+    hard:{name:'Extremo',gain:.076,leak:.042,desc:'Más resistencia. La constancia lo es todo.'}
+  };
+  const storage = {
+    get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+  const savedValue = storage.get('oio.settings.v1', {});
+  const saved = savedValue && typeof savedValue === 'object' ? savedValue : {};
+  let level = levels[saved.level] ? saved.level : 'normal';
+  let sensitivity = Number.isFinite(saved.sensitivity) ? clamp(saved.sensitivity,0,100) : 55;
+  let reduced = Boolean(saved.reduced ?? matchMedia('(prefers-reduced-motion: reduce)').matches);
+  let sound = Boolean(saved.sound), phase = 'idle', mode = 'mic';
+  let progress = 0, visual = 0, velocity = 0, intensity = 0, elapsed = 0;
+  let hold = false, goalHold = 0, started = false, token = 0;
+  let stream = null, context = null, source = null, analyser = null;
+  let timeData = null, freqData = null, noiseFloor = .003, gate = 0, rawPower = 0;
+  let countEnd = 0, last = 0, uiAt = 0, frameId = 0, toastTimer = 0;
+  let finaleAge = 0, emitted = 0, emissionTotal = 28, eggDrain = 0;
+  let particles = [], sparks = [], rings = [], audioTasks = new Set();
+  let canvasW = 390, canvasH = 844, tip = {x:195,y:500};
+  let burstCount = 0, newRecord = false, ownsFullscreen = false;
+  const bars = [...$('signal').children];
+  const difficultyButtons = [...document.querySelectorAll('[data-level]')];
+  const ctx = el.canvas.getContext('2d');
 
-        #ui-container {
-            position: absolute;
-            top: 40px;
-            text-align: center;
-            z-index: 10;
-            width: 100%;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
+  function saveSettings() { storage.set('oio.settings.v1',{level,sensitivity,reduced,sound}); }
+  function toast(message) {
+    $('toast').textContent=message; $('toast').classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),3000);
+  }
+  function bestTime() {
+    const n=storage.get('oio.best.v1.'+level,null);
+    return Number.isFinite(n)&&n>0?n:null;
+  }
+  function updateRecord() {
+    const best=bestTime();
+    el.record.innerHTML=mode==='demo'?'Demo':best?best.toFixed(1)+' <span>s</span>':'— <span>s</span>';
+  }
+  function caption(title,detail='') {
+    $('gameHeading').textContent=title; $('gameDetail').textContent=detail;
+  }
+  function setPhase(next) {
+    phase=next; el.stage.dataset.phase=next;
+    el.countdown.hidden=next!=='countdown';
+    el.success.hidden=next!=='won';
+    $('pauseLayer').hidden=!['paused','requesting'].includes(next);
+    $('pauseTitle').textContent=next==='requesting'?'Permite el micrófono.':'Toma aire.';
+    $('pauseText').textContent=next==='requesting'?'Acepta el aviso del navegador para empezar.':'Tu progreso te espera.';
+    $('resumeBtn').hidden=next==='requesting';
+    el.hold.hidden=mode!=='demo'||next!=='playing';
+    $('edgeHint').hidden=next!=='playing'||progress>.08||mode==='demo';
+    el.start.disabled=next==='requesting';
+    el.startLabel.textContent=next==='requesting'?'Esperando permiso…':'Activar y entrar';
+    $('cancelPermission').hidden=next!=='requesting';
+    $('pauseBtn').disabled=next!=='playing';
+    $('settingsBtn').disabled=['finale','won','countdown','requesting'].includes(next);
+    $('soundBtn').disabled=next==='finale';
+    const badges={idle:'Listo',requesting:'Permiso',countdown:'Prepárate',playing:mode==='demo'?'Demo táctil':'Sopla abajo',paused:'En pausa',finale:'¡Al máximo!',won:'Completado',error:'Reintentar'};
+    el.badge.textContent=badges[next]||'Listo';
+    $('signalLabel').textContent=mode==='demo'?'TACTO':'AIRE';
+    $('gameCaption').hidden=['requesting','countdown','paused','won'].includes(next);
+  }
+  function selectLevel(key) {
+    level=key;
+    difficultyButtons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.level===key)));
+    $('difficultyDescription').textContent=levels[key].desc;
+    saveSettings(); updateRecord();
+  }
+  function syncSettings() {
+    $('sensitivity').value=sensitivity; $('sensitivityValue').textContent=sensitivity+'%';
+    $('reduceMotion').checked=reduced; $('soundToggle').checked=sound;
+    $('soundBtn').setAttribute('aria-pressed',String(sound));
+    $('soundBtn').setAttribute('aria-label',sound?'Desactivar sonido':'Activar sonido');
+    $('soundIcon').setAttribute('href',sound?'#i-sound':'#i-mute');
+  }
+  function showGame() {
+    el.welcome.hidden=true; el.stage.hidden=false;
+    document.body.classList.add('in-game'); resizeCanvas();
+  }
+  function showWelcome() {
+    el.stage.hidden=true; el.welcome.hidden=false;
+    document.body.classList.remove('in-game');
+    if(ownsFullscreen&&document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+    ownsFullscreen=false;
+    el.start.focus({preventScroll:true});
+  }
+  // Mejora progresiva: si el navegador no admite Fullscreen, 100dvh sigue llenando su vista.
+  function requestFullView() {
+    if(!document.fullscreenElement&&document.documentElement.requestFullscreen) {
+      const run=token;
+      document.documentElement.requestFullscreen({navigationUI:'hide'}).then(()=>{
+        if(run===token&&!el.stage.hidden)ownsFullscreen=true;
+        else if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+      }).catch(()=>{});
+    }
+  }
+  function stopAudio() {
+    const previousStream=stream, previousContext=context;
+    stream=null; context=null; analyser=null; timeData=null; freqData=null;
+    if(source){try{source.disconnect();}catch{}source=null;}
+    if(previousStream)previousStream.getTracks().forEach(t=>t.stop());
+    if(previousContext&&previousContext.state!=='closed')previousContext.close().catch(()=>{});
+    intensity=0; gate=0; rawPower=0; setHold(false);
+  }
+  function clearRound() {
+    progress=0;visual=0;velocity=0;elapsed=0;goalHold=0;started=false;
+    finaleAge=0;emitted=0;eggDrain=0;burstCount=0;newRecord=false;
+    emissionTotal=reduced?8:28;particles=[];sparks=[];rings=[];
+    noiseFloor=.003;gate=0;el.error.hidden=true;updateHUD();
+  }
+  function returnHome() {
+    token++;stopAudio();closeCelebrationAudio();clearRound();setPhase('idle');showWelcome();
+  }
+  function pause(message='Tu progreso te espera.') {
+    if(!['requesting','countdown','playing'].includes(phase))return;
+    token++;stopAudio();setPhase('paused');$('pauseText').textContent=message;
+    $('resumeBtn').focus({preventScroll:true});
+  }
+  function beginCountdown() {
+    showGame();countEnd=performance.now()+3000;el.count.textContent='3';setPhase('countdown');
+  }
+  function fail(error) {
+    token++;stopAudio();setPhase('error');showWelcome();
+    const messages={
+      NotAllowedError:'Permite el micrófono en la configuración del sitio y vuelve a intentarlo. Si abriste el juego dentro de otra app, abre el enlace directamente en Chrome o Safari.',
+      NotFoundError:'No encontramos un micrófono. Puedes probar con el dedo.',
+      NotReadableError:'El micrófono no está disponible. Cierra otras apps que lo estén usando y reintenta.',
+      SecurityError:'Abre el enlace HTTPS directamente en el navegador para usar el micrófono.',
+      AbortError:'Se interrumpió el acceso al micrófono. Puedes volver a intentarlo.'
+    };
+    el.error.textContent=messages[error.name]||error.message||'No pudimos activar el micrófono.';
+    el.error.hidden=false;
+  }
+  async function start() {
+    if(['requesting','countdown','playing','finale'].includes(phase))return;
+    if(phase!=='paused')clearRound();
+    el.error.hidden=true;
+    const run=++token;showGame();requestFullView();
+    if(mode==='demo'){beginCountdown();updateRecord();return;}
+    if(!window.isSecureContext||!navigator.mediaDevices?.getUserMedia){fail(new Error('Abre el juego desde tu enlace HTTPS para usar el micrófono. La prueba con el dedo funciona también sin permisos.'));return;}
+    const Audio=window.AudioContext||window.webkitAudioContext;
+    if(!Audio){fail(new Error('Este navegador no admite el audio del juego. Puedes probar con el dedo.'));return;}
+    setPhase('requesting');
+    let localContext=null,localStream=null;
+    try {
+      localContext=new Audio({latencyHint:'interactive'});context=localContext;
+      const resumed=localContext.resume();resumed.catch(()=>{});
+      localStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:{ideal:false},noiseSuppression:{ideal:false},autoGainControl:{ideal:false},channelCount:{ideal:1}},video:false});
+      if(run!==token){localStream.getTracks().forEach(t=>t.stop());if(localContext.state!=='closed')await localContext.close();return;}
+      stream=localStream;await resumed;if(run!==token)return;
+      if(localContext.state!=='running')throw new Error('El audio quedó en pausa. Toca activar para volver a intentarlo.');
+      analyser=localContext.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.35;
+      analyser.minDecibels=-90;analyser.maxDecibels=-10;
+      timeData=new Float32Array(analyser.fftSize);freqData=new Float32Array(analyser.frequencyBinCount);
+      source=localContext.createMediaStreamSource(stream);
+      // No se conecta el analizador hasta terminar TRES segundos. No hay grabación.
+      stream.getAudioTracks().forEach(t=>t.addEventListener('ended',()=>{
+        if(run===token&&['countdown','playing'].includes(phase))pause('Se desconectó el micrófono. Toca continuar para recuperarlo.');
+      }));
+      localContext.onstatechange=()=>{
+        if(run===token&&context===localContext&&['suspended','interrupted'].includes(localContext.state)&&phase==='playing')pause('El navegador pausó el audio. Puedes continuar.');
+      };
+      beginCountdown();updateRecord();
+    } catch(error) {
+      if(localStream&&localStream!==stream)localStream.getTracks().forEach(t=>t.stop());
+      if(localContext&&localContext!==context&&localContext.state!=='closed')localContext.close().catch(()=>{});
+      if(run===token)fail(error);
+    }
+  }
+   function readBlow(dt){if(mode==='demo')return hold ? .82 : 0;if(!analyser||!context)return 0;analyser.getFloatTimeDomainData(timeData);analyser.getFloatFrequencyData(freqData);let square=0,mean=0;for(const n of timeData)mean+=n;mean/=timeData.length;for(const n of timeData)square+=(n-mean)*(n-mean);const rms=Math.sqrt(square/timeData.length);let energy=0,low=0,logSum=0,binCount=0,maxBin=0;
+  const hz=context.sampleRate/analyser.fftSize,first=Math.max(1,Math.ceil(60/hz)),end=Math.min(freqData.length,Math.ceil(5000/hz));
+  for(let i=first;i<end;i++){const p=Math.pow(10,freqData[i]/10)||1e-12;energy+=p;logSum+=Math.log(Math.max(p,1e-12));maxBin=Math.max(maxBin,p);if(i*hz<900)low+=p;binCount++}
+  const flatness=energy>0?Math.exp(logSum/Math.max(1,binCount))/(energy/Math.max(1,binCount)):0,lowRatio=low/Math.max(energy,1e-12),peak=maxBin/Math.max(energy,1e-12);
+  const threshold=Math.max(.006+Math.pow(1-sensitivity/100,2)*.095,noiseFloor*2.8);
+  if(rms<threshold*.85)noiseFloor+= (rms-noiseFloor)*(1-Math.exp(-dt*.8));noiseFloor=clamp(noiseFloor,.001,.027);
+  const airLike=(flatness>.13||lowRatio>.48)&&peak<.62;const strength=clamp((rms-threshold)/Math.max(.025,threshold*2.5));
+  rawPower=clamp(rms/Math.max(.045,threshold*4));if(airLike&&strength>.045)gate+=dt;else gate=Math.max(0,gate-dt*2.5);
+  return gate>.16?strength:0;
+ }
 
-        h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.6);
-        }
 
-        #instruction-text {
-            font-size: 14px;
-            color: #a0a5b5;
-            margin-bottom: 20px;
-            font-weight: 500;
-            min-height: 40px;
-        }
+  function finishInflation() {
+    progress=1;token++;stopAudio();finaleAge=0;emitted=0;eggDrain=0;
+    setPhase('finale');caption('¡Se viene la sorpresa!','Mira la punta…');
+    if(mode==='mic') {
+      const best=bestTime();newRecord=!best||elapsed<best;
+      if(newRecord)storage.set('oio.best.v1.'+level,Math.round(elapsed*1000)/1000);
+    }
+    updateRecord();updateHUD();
+  }
+  function showResult() {
+    setPhase('won');
+    el.result.textContent=mode==='demo'?'Demo completada · Ahora prueba con tu soplido.':elapsed.toFixed(1)+' s · '+(newRecord?'Tu nuevo mejor tiempo.':'Reto completado.');
+    $('replayBtn').focus({preventScroll:true});if(sound)playWin();
+  }
+   function playWin(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const a=new A();audioTasks.add(a);a.resume().catch(()=>{});[523.25,659.25,783.99,1046.5].forEach((f,i)=>{const osc=a.createOscillator(),gain=a.createGain(),t=a.currentTime+i*.09;osc.type='sine';osc.frequency.value=f;gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.09,t+.015);gain.gain.exponentialRampToValueAtTime(.001,t+.35);osc.connect(gain);gain.connect(a.destination);osc.start(t);osc.stop(t+.4)});setTimeout(()=>{a.close().catch(()=>{});audioTasks.delete(a)},1000)}catch{}}
 
-        button {
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
-            color: white;
-            border: none;
-            padding: 16px 36px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 6px 25px rgba(79, 172, 254, 0.4);
-            transition: all 0.2s ease;
-        }
+  function closeCelebrationAudio(){audioTasks.forEach(a=>{if(a.state!=='closed')a.close().catch(()=>{});});audioTasks.clear();}
 
-        button.waiting {
-            background: linear-gradient(135deg, #ffa000, #ff6f00);
-            box-shadow: 0 6px 25px rgba(255, 160, 0, 0.4);
-            cursor: not-allowed;
-        }
-
-        button.active-blowing {
-            background: linear-gradient(135deg, #ff4757, #ff2a6d);
-            box-shadow: 0 6px 25px rgba(255, 71, 87, 0.5);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* CONTENEDOR PRINCIPAL oIo */
-        #balloons-group {
-            position: absolute;
-            bottom: -5px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            transform-origin: bottom center;
-            transform: scale(0.05);
-            will-change: transform;
-        }
-
-        /* --- EL CONDÓN CENTRAL --- */
-        #center-balloon {
-            width: 55px;
-            height: 330px;
-            /* Color látex semitransparente con brillo */
-            background: linear-gradient(90deg, rgba(254,236,214,0.85), rgba(255,255,255,0.95), rgba(254,236,214,0.85));
-            border-radius: 25px 25px 8px 8px;
-            z-index: 3;
-            position: relative;
-            box-shadow: 
-                inset -10px 0 25px rgba(0, 0, 0, 0.15), 
-                inset 8px 8px 20px rgba(255, 255, 255, 0.8),
-                0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        /* La burbuja / depósito de la punta superior del condón */
-        #center-balloon::after {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 18px;
-            height: 18px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 50%;
-            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.1), inset 3px 3px 5px rgba(255,255,255,1);
-        }
-
-        /* --- LOS HUEVITOS KINDER LATERALES --- */
-        .egg {
-            width: 90px;
-            height: 120px;
-            /* Forma geométrica de huevo (más angosto arriba, ancho abajo) */
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            z-index: 2;
-            margin: 0 -15px; 
-            margin-bottom: 5px; 
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                inset -12px -12px 25px rgba(0, 0, 0, 0.35), 
-                inset 10px 10px 20px rgba(255, 255, 255, 0.5),
-                0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Mitad superior blanca del huevo Kinder */
-        .egg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 52%;
-            background: linear-gradient(135deg, #ffffff, #f0f0f0);
-            border-bottom: 3px solid #e0e0e0;
-        }
-
-        /* Mitad inferior naranja brillante del huevo Kinder */
-        .egg::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 48%;
-            background: linear-gradient(135deg, #ff6d00, #ff9100);
-        }
-
-        /* El anillo/borde de la base del condón */
-        #ring-base {
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 65px;
-            height: 12px;
-            background-color: rgba(254,236,214,0.95);
-            border-radius: 6px;
-            z-index: 4;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 2px 3px rgba(255,255,255,1);
-        }
-    </style>
-</head>
-<body>
-
-    <div id="ui-container">
-        <h1>🎈 Desafío oIo Custom</h1>
-        <div id="instruction-text">Toca el botón inferior para dar los permisos correspondientes.</div>
-        <button id="start-btn">Activar e Inflar</button>
-    </div>
-
-    <div id="balloons-group">
-        <div class="egg" id="left-egg"></div>
-        <div id="center-balloon"></div>
-        <div class="egg" id="right-egg"></div>
-        <div id="ring-base"></div>
-    </div>
-
-    <script>
-        const startBtn = document.getElementById('start-btn');
-        const instructionText = document.getElementById('instruction-text');
-        const balloonsGroup = document.getElementById('balloons-group');
-        
-        let audioContext, analyser, microphone;
-        let currentScale = 0.05; 
-        let isListening = false; 
-
-        startBtn.addEventListener('click', async () => {
-            if(startBtn.classList.contains('waiting') || isListening) return;
-
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-                
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                microphone = audioContext.createMediaStreamSource(stream);
-                analyser.fftSize = 512;
-                microphone.connect(analyser);
-
-                let countdown = 3;
-                startBtn.classList.add('waiting');
-                startBtn.innerText = `Preparando... (${countdown}s)`;
-                instructionText.innerHTML = "<span style='color: #ffa000;'>¡Permiso concedido! Prepárate, pero NO soples todavía...</span>";
-                balloonsGroup.style.transform = `scale(${currentScale})`;
-
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    if (countdown > 0) {
-                        startBtn.innerText = `Preparando... (${countdown}s)`;
-                    } else {
-                        clearInterval(countdownInterval);
-                        
-                        isListening = true;
-                        startBtn.className = 'active-blowing';
-                        startBtn.innerText = "¡SOPLA AL MICRÓFONO AHORA!";
-                        instructionText.innerHTML = "<span style='color: #ff4757; font-weight: bold;'>¡Sopla fuerte abajo para inflar el condón y los huevitos! 📱💨</span>";
-                        
-                        processBlow();
-                    }
-                }, 1000);
-
-                const dataArray = new Uint8Array(analyser.frequencyBinCount);
-                
-                function processBlow() {
-                    if(!isListening) return;
-
-                    analyser.getByteFrequencyData(dataArray);
-                    
-                    let total = 0;
-                    const sampleBins = 25; 
-                    for (let i = 0; i < sampleBins; i++) {
-                        total += dataArray[i];
-                    }
-                    let blowIntensity = total / sampleBins;
-
-                    if (blowIntensity > 60) { 
-                        currentScale += (blowIntensity * 0.0005); 
-                        if (currentScale > 1.8) currentScale = 1.8; 
-                    } else {
-                        currentScale -= 0.006; 
-                        if (currentScale < 0.05) currentScale = 0.05;
-                    }
-
-                    let vibrationX = 0;
-                    let vibrationY = 0;
-                    
-                    if (blowIntensity > 60) {
-                        const time = performance.now() * 0.1;
-                        const shakeStrength = (blowIntensity - 60) * 0.0008; 
-                        vibrationX = Math.sin(time) * shakeStrength;
-                        vibrationY = Math.cos(time) * shakeStrength;
-                    }
-
-                    let finalScaleX = (currentScale + vibrationX) * 0.95;
-                    let finalScaleY = (currentScale * 1.25) + vibrationY;
-
-                    balloonsGroup.style.transform = `scale(${finalScaleX}, ${finalScaleY})`;
-
-                    requestAnimationFrame(processBlow);
-                }
-
-            } catch (err) {
-                alert('No se pudo acceder al micrófono. Asegúrate de dar los permisos correspondientes.');
-                console.error(err);
-            }
-        });
-    </script>
-</body>
-</html>
+  // Punto fijo de toda la escena: centro de la abertura a DOS píxeles del borde.
+  // Primero se traslada la boca local (0,-7) al origen y después se escala.
+  function renderPose(now,dt) {
+    const target=progress;
+    if(reduced){visual=target;velocity=0;}
+    else{velocity+=(target-visual)*90*dt;velocity*=Math.exp(-dt*15);visual+=velocity*dt;}
+    const v=clamp(visual), t=now/1000;
+    const maxX=Math.min(canvasW/350,(canvasH-70)/300,2.4);
+    const fullHeight=Math.max(100,Math.min(canvasH*.70,canvasH-130));
+    const sx=maxX*(.5+.5*Math.sqrt(v));
+    const sy=(Math.max(24,canvasH*.04)+(fullHeight-Math.max(24,canvasH*.04))*v)/355;
+    const release=phase==='finale'?Math.max(0,1-finaleAge/2.3):0;
+    const force=phase==='playing'?intensity:release*.8;
+    // Flexión + vibración + pequeños cambios de volumen, siempre con boca fija.
+    const bend=reduced?0:(Math.sin(t*11)*4.8+Math.sin(t*47)*1.45+Math.sin(t*19)*1.2)*force;
+    const stretchY=reduced?1:1+Math.sin(t*23)*force*.013;
+    const stretchX=reduced?1:1+Math.sin(t*29+.7)*force*.045;
+    const rootY=canvasH-2;
+    el.group.setAttribute('transform',`translate(${canvasW/2} ${rootY}) scale(${sx} ${sy}) translate(0 7)`);
+    el.latex.setAttribute('transform',`translate(0 -7) skewX(${bend}) scale(${stretchX} ${stretchY}) translate(0 7)`);
+    tip={x:canvasW/2-sx*Math.tan(bend*Math.PI/180)*355*stretchY,y:rootY-sy*355*stretchY};
+    // El vaciado depende de la CANTIDAD EMITIDA, no de un temporizador aparte.
+    const drainTarget=emitted/emissionTotal;
+    eggDrain+=(drainTarget-eggDrain)*(1-Math.exp(-dt*10));
+    const ex=1-.66*eggDrain,ey=1-.93*eggDrain,spread=76-29*eggDrain;
+    const jiggle=reduced?0:Math.sin(t*31)*force*4*(1-eggDrain);
+    el.left.setAttribute('transform',`translate(${-spread} -7) rotate(${-12+jiggle}) scale(${ex} ${ey})`);
+    el.right.setAttribute('transform',`translate(${spread} -7) rotate(${12-jiggle*.85}) scale(${ex} ${ey})`);
+    $('eggWrinkleLeft').setAttribute('opacity',eggDrain*.8);
+    $('eggWrinkleRight').setAttribute('opacity',eggDrain*.8);
+  }
+  function spawnSwimmer(index) {
+    const life=reduced?.8:.8+Math.random()*.48;
+    const available=Math.max(30,tip.y-90);
+    const rise=Math.min(available*.68,reduced?70:170+Math.random()*55);
+    const speed=rise/life+45*life;
+    const fan=(index%2?-1:1)*(25+Math.random()*75);
+    particles.push({x:tip.x,y:tip.y,vx:fan,vy:-speed,age:0,life,size:reduced?4:3.6+Math.random()*2.4,seed:Math.random()*7});
+    emitted++;
+  }
+  function popParticle(p) {
+    burstCount++;
+    rings.push({x:p.x,y:p.y,age:0,life:reduced?.32:.5});
+    const count=reduced?4:9;
+    for(let i=0;i<count;i++) {
+      const angle=i/count*Math.PI*2+Math.random()*.4,speed=reduced?23:45+Math.random()*70;
+      sparks.push({x:p.x,y:p.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,age:0,life:.32+Math.random()*.2,size:1+Math.random()*1.7});
+    }
+  }
+  function drawEffects(dt,now) {
+    if(!ctx)return;
+    ctx.clearRect(0,0,canvasW,canvasH);
+    // Hilos de aire entran desde abajo, alrededor de la boca.
+    if(phase==='playing'&&intensity>.04&&!reduced) {
+      ctx.strokeStyle='#cfe7b7';ctx.lineWidth=1;
+      for(let i=0;i<5;i++) {
+        const travel=(now*.0018+i*.19)%1;
+        const x=canvasW/2+(i-2)*8+Math.sin(now*.007+i)*2;
+        const y=canvasH-4-travel*65;
+        ctx.globalAlpha=intensity*(1-travel)*.27;
+        ctx.beginPath();ctx.moveTo(x,y+10);ctx.quadraticCurveTo(x+4,y+4,x,y);ctx.stroke();
+      }
+      ctx.globalAlpha=1;
+    }
+    const alive=[];
+    for(const p of particles) {
+      p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=90*dt;
+      p.x+=Math.sin(p.age*18+p.seed)*dt*(reduced?0:15);
+      if(p.age>=p.life){popParticle(p);continue;}
+      alive.push(p);
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+      ctx.globalAlpha=Math.min(1,p.age*12);
+      ctx.shadowColor='#eef6dd';ctx.shadowBlur=reduced?0:8;
+      ctx.strokeStyle='#f6f9ec';ctx.lineWidth=1.4;ctx.lineCap='round';
+      const wave=Math.sin(p.age*27+p.seed)*(reduced?1:5);
+      ctx.beginPath();ctx.moveTo(0,p.size*1.25);
+      ctx.bezierCurveTo(wave,p.size*2,-wave,p.size*3.5,wave*.6,p.size*5);ctx.stroke();
+      ctx.fillStyle='#fafdf1';ctx.beginPath();ctx.ellipse(0,0,p.size*.68,p.size*1.2,0,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.fillStyle='#d2dec4';ctx.beginPath();ctx.ellipse(-p.size*.13,-p.size*.12,p.size*.23,p.size*.43,-.2,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+    }
+    particles=alive;
+    rings=rings.filter(r=>r.age<r.life);
+    for(const r of rings){r.age+=dt;const t=clamp(r.age/r.life);ctx.globalAlpha=(1-t)*.65;ctx.lineWidth=1.2;ctx.strokeStyle='#edf3ce';ctx.beginPath();ctx.arc(r.x,r.y,3+t*(reduced?10:27),0,Math.PI*2);ctx.stroke();}
+    sparks=sparks.filter(p=>p.age<p.life);
+    for(const p of sparks){p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=50*dt;ctx.globalAlpha=clamp(1-p.age/p.life);ctx.fillStyle='#f2edcf';ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();}
+    ctx.globalAlpha=1;
+  }
+  function updateHUD() {
+    const pct=Math.round(progress*100);el.percent.textContent=pct;
+    el.progress.setAttribute('aria-valuenow',pct);el.fill.style.height=pct+'%';
+    el.timer.innerHTML=elapsed.toFixed(1).padStart(4,'0')+' <span>s</span>';
+    $('edgeHint').hidden=phase!=='playing'||progress>.08||mode==='demo';
+    $('gameCaption').classList.toggle('minimal',phase==='playing'&&started);
+    if(phase==='playing')caption(mode==='demo'?'Mantén pulsada la pantalla.':intensity>.05?'Así, sigue soplando.':started?'Respira. Aquí te esperamos.':'Ahora sí, sopla.',mode==='demo'?'Suelta para dejar salir un poco de aire.':'Hacia el micrófono del borde inferior.');
+    if(phase==='finale'&&emitted>0)caption('¡Ahí van!','Los huevitos se van quedando sin aire…');
+    bars.forEach((b,i)=>{b.style.height=(3+intensity*(4+(Math.sin(performance.now()*.015+i)+1)*5))+'px';b.style.background=intensity>i/16?'#d6e6b5':'#657f57';});
+  }
+  function resizeCanvas() {
+    if(el.stage.hidden)return;
+    const r=el.stage.getBoundingClientRect();canvasW=r.width;canvasH=r.height;
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    el.canvas.width=Math.round(canvasW*dpr);el.canvas.height=Math.round(canvasH*dpr);
+    if(ctx)ctx.setTransform(dpr,0,0,dpr,0,0);
+    el.svg.setAttribute('viewBox',`0 0 ${canvasW} ${canvasH}`);
+    renderPose(performance.now(),0);
+  }
+  function tick(now) {
+    const dt=Math.min((now-(last||now))/1000,.045);last=now;
+    if(phase==='countdown'){
+      const remain=Math.max(0,(countEnd-now)/1000);el.count.textContent=Math.max(1,Math.ceil(remain));
+      if(remain===0){if(mode==='mic'&&source&&analyser)source.connect(analyser);gate=0;intensity=0;setPhase('playing');if(mode==='demo')el.hold.focus({preventScroll:true});}
+    }
+    if(phase==='playing'){
+      const target=readBlow(dt);intensity+=(target-intensity)*(1-Math.exp(-dt*(target>intensity?12:7)));
+      if(intensity>.05)started=true;if(started)elapsed+=dt;
+      const config=levels[level];
+      progress=clamp(progress+(intensity>.025?config.gain*Math.pow(intensity,.72):-config.leak)*dt);
+      goalHold=progress>=.998&&intensity>.06?goalHold+dt:0;
+      if(goalHold>=.7)finishInflation();
+    }
+    if(!el.stage.hidden){
+      renderPose(now,dt);
+      if(phase==='finale'){
+        finaleAge+=dt;
+        const expected=Math.floor(clamp((finaleAge-.35)/1.65)*emissionTotal);
+        while(emitted<expected)spawnSwimmer(emitted);
+      }
+      drawEffects(dt,now);
+      if(phase==='finale'&&finaleAge>4.3&&particles.length===0&&sparks.length===0)showResult();
+      if(now-uiAt>75){updateHUD();uiAt=now;}
+    }
+    frameId=requestAnimationFrame(tick);
+  }
+  function setHold(value){hold=Boolean(value&&phase==='playing'&&mode==='demo');el.hold.classList.toggle('is-held',hold);}
+  el.start.addEventListener('click',()=>{mode='mic';start();});
+  el.demo.addEventListener('click',()=>{mode='demo';start();});
+  $('resumeBtn').addEventListener('click',start);$('replayBtn').addEventListener('click',start);
+  ['backBtn','cancelCountdown','cancelPermission','exitPaused','exitWon'].forEach(id=>$(id).addEventListener('click',returnHome));
+  $('pauseBtn').addEventListener('click',()=>pause());
+  difficultyButtons.forEach(b=>b.addEventListener('click',()=>selectLevel(b.dataset.level)));
+  el.hold.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();el.hold.setPointerCapture(e.pointerId);setHold(true);});
+  ['pointerup','pointercancel','lostpointercapture'].forEach(type=>el.hold.addEventListener(type,()=>setHold(false)));
+  el.hold.addEventListener('contextmenu',e=>e.preventDefault());
+  el.hold.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();setHold(true);}});
+  el.hold.addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();setHold(false);}});
+  el.hold.addEventListener('blur',()=>setHold(false));
+  function openDialog(id){pause('Pausamos mientras revisas los ajustes.');$(id).showModal();}
+  $('helpBtn').addEventListener('click',()=>openDialog('helpDialog'));
+  $('settingsBtn').addEventListener('click',()=>openDialog('settingsDialog'));
+  document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
+  document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
+  $('sensitivity').addEventListener('input',e=>{sensitivity=Number(e.target.value);$('sensitivityValue').textContent=sensitivity+'%';saveSettings();});
+  $('reduceMotion').addEventListener('change',e=>{reduced=e.target.checked;syncSettings();saveSettings();});
+  function toggleSound(value){sound=value;syncSettings();saveSettings();}
+  $('soundBtn').addEventListener('click',()=>toggleSound(!sound));$('soundToggle').addEventListener('change',e=>toggleSound(e.target.checked));
+  $('shareBtn').addEventListener('click',async()=>{
+    if(!/^https?:$/.test(location.protocol)){toast('Comparte el enlace de tu página una vez publicada.');return;}
+    const url=new URL(location.href);url.hash='';url.search='';
+    const message=mode==='mic'?`Llegué al 100% en ${elapsed.toFixed(1)} segundos. ¿Me superas?`:'Prueba este reto de soplido.';
+    try{if(navigator.share)await navigator.share({title:'oIo — Sopla y sorprende',text:message,url:url.href});else if(navigator.clipboard){await navigator.clipboard.writeText(message+' '+url.href);toast('Enlace copiado.');}else toast('Copia el enlace del navegador para compartir.');}catch(e){if(e.name!=='AbortError')toast('No se pudo compartir. Copia el enlace del navegador.');}
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){pause('Pausamos porque saliste del juego.');cancelAnimationFrame(frameId);frameId=0;last=0;closeCelebrationAudio();}
+    else if(!frameId)frameId=requestAnimationFrame(tick);
+  });
+  window.addEventListener('pagehide',()=>{pause();token++;stopAudio();cancelAnimationFrame(frameId);frameId=0;last=0;closeCelebrationAudio();});
+  window.addEventListener('pageshow',()=>{if(!frameId&&!document.hidden)frameId=requestAnimationFrame(tick);});
+  window.addEventListener('blur',()=>setHold(false));window.addEventListener('resize',resizeCanvas);
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',resizeCanvas);
+  document.addEventListener('fullscreenchange',resizeCanvas);
+  selectLevel(level);syncSettings();setPhase('idle');updateHUD();
+  frameId=requestAnimationFrame(tick);
+})();
+</script></body></html>
